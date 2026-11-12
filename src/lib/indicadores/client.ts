@@ -1,12 +1,8 @@
 import { cacheLife } from "next/cache";
 import { resumenSchema, serieSchema } from "./schema";
-import type { Resumen, Serie } from "./schema";
+import type { Codigo, Resumen, Serie } from "./schema";
 
 const BASE_URL = "https://mindicador.cl/api";
-
-// Indicadores que permite consultar nuestra app
-export const CODIGOS = ["uf", "dolar", "euro", "utm", "ipc", "tpm"] as const;
-export type Codigo = (typeof CODIGOS)[number];
 
 // Resumen con el valor actual de todos los indicadores
 export async function getResumen(): Promise<Resumen> {
