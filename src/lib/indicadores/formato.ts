@@ -23,3 +23,25 @@ export function formatearFecha(fechaISO: string): string {
     year: "numeric",
   });
 }
+
+// Fecha corta para los ejes del gráfico: "15 ene"
+export function formatearFechaCorta(fechaISO: string): string {
+  return new Date(fechaISO).toLocaleDateString("es-CL", {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "short",
+  });
+}
+
+// Formatea una variación con signo: "+4,21%" o "-0,80 pp" (puntos porcentuales)
+export function formatearVariacion(
+  valor: number,
+  tipo: "porcentaje" | "puntos",
+): string {
+  const numero = valor.toLocaleString("es-CL", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    signDisplay: "exceptZero",
+  });
+  return tipo === "porcentaje" ? `${numero}%` : `${numero} pp`;
+}

@@ -30,4 +30,8 @@ describe("formatearMonto", () => {
   it("muestra otras monedas con dos decimales", () => {
     expect(formatearMonto(40.5, "USD")).toBe("40,50 USD");
   });
+
+  it("permite elegir la cantidad de decimales", () => {
+    expect(formatearMonto(41309.19, "CLP", 2)).toBe("41.309,19 CLP");
+  });
 });

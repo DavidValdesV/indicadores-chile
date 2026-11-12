@@ -1,26 +1,117 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light dark;
+  --background: #f3f5f9;
+  --foreground: #0f1b33;
+  --surface: #ffffff;
+  --line: #dde3ee;
+  --muted: #5b6784;
+  --accent: #2f6beb;
+  --up: #15803d;
+  --down: #c62a3a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a1020;
+    --foreground: #e6ebf5;
+    --surface: #111a2e;
+    --line: #1f2b45;
+    --muted: #8a97b2;
+    --accent: #5b94ff;
+    --up: #34c38f;
+    --down: #f0616d;
+  }
+}
+
+@theme {
+  /* Curva más enérgica que la ease-out por defecto */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --font-sans: var(--font-plex);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Cifras con ancho fijo para que no "bailen" al cambiar */
+.cifras {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Entrada de la página: un solo momento, con retardo corto entre elementos */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aparecer-suave {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Las mini líneas de la pizarra se dibujan de izquierda a derecha */
+@keyframes dibujar {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.aparece {
+  animation: aparecer 260ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+
+.linea-dibujo {
+  stroke-dasharray: 1;
+  animation: dibujar 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 40ms + 150ms);
+}
+
+/* Movimiento reducido: se mantiene el fundido, se quita el desplazamiento */
+@media (prefers-reduced-motion: reduce) {
+  .aparece {
+    animation-name: aparecer-suave;
+  }
+
+  .linea-dibujo {
+    animation: none;
+    stroke-dasharray: none;
+  }
 }

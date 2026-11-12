@@ -8,7 +8,5 @@ export async function SeccionConversor() {
 }
 
 export function ConversorSkeleton() {
-  return (
-    <div className="h-32 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700" />
-  );
+  return <div className="h-48 animate-pulse rounded-md bg-line" />;
 }
