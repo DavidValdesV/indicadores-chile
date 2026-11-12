@@ -40,3 +40,7 @@ export type Indicador = z.infer<typeof indicadorSchema>;
 export type Resumen = z.infer<typeof resumenSchema>;
 export type PuntoSerie = z.infer<typeof puntoSerieSchema>;
 export type Serie = z.infer<typeof serieSchema>;
+
+// Indicadores que permite consultar nuestra app
+export const CODIGOS = ["uf", "dolar", "euro", "utm", "ipc", "tpm"] as const;
+export type Codigo = (typeof CODIGOS)[number];
