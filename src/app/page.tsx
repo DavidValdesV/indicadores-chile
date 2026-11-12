@@ -1,23 +1,22 @@
 import { Suspense } from "react";
-import { getResumen } from "@/lib/indicadores/client";
-
-async function Valores() {
-  const resumen = await getResumen();
-  return (
-    <ul>
-      <li>UF: {resumen.uf.valor}</li>
-      <li>Dólar: {resumen.dolar.valor}</li>
-      <li>UTM: {resumen.utm.valor}</li>
-    </ul>
-  );
-}
+import {
+  TarjetasIndicadores,
+  TarjetasSkeleton,
+} from "@/components/TarjetasIndicadores";
+import {
+  GraficoSkeleton,
+  SeccionGrafico,
+} from "@/components/SeccionGrafico";
 
 export default function Home() {
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-bold">Indicadores Chile</h1>
-      <Suspense fallback={<p>Cargando...</p>}>
-        <Valores />
+    <main className="mx-auto max-w-4xl p-6">
+      <h1 className="mb-6 text-3xl font-bold">Indicadores Chile</h1>
+      <Suspense fallback={<TarjetasSkeleton />}>
+        <TarjetasIndicadores />
+      </Suspense>
+      <Suspense fallback={<GraficoSkeleton />}>
+        <SeccionGrafico />
       </Suspense>
     </main>
   );
