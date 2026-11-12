@@ -26,8 +26,12 @@ export function convertir(
   return (monto * tasas[desde]) / tasas[hacia];
 }
 
-export function formatearMonto(valor: number, moneda: Moneda): string {
-  const decimales = moneda === "CLP" ? 0 : 2;
+// Por defecto los pesos van sin decimales y el resto con dos
+export function formatearMonto(
+  valor: number,
+  moneda: Moneda,
+  decimales: number = moneda === "CLP" ? 0 : 2,
+): string {
   const numero = valor.toLocaleString("es-CL", {
     minimumFractionDigits: decimales,
     maximumFractionDigits: decimales,

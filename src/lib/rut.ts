@@ -18,13 +18,21 @@ export function calcularDv(cuerpo: string): string {
   return String(resultado);
 }
 
-// Un RUT es válido si tiene 7 u 8 dígitos más el verificador, y este coincide
-export function validarRut(texto: string): boolean {
+export type EstadoRut = "vacio" | "formato" | "verificador" | "valido";
+
+// Distingue por qué un RUT no es válido, para dar un mensaje útil
+export function evaluarRut(texto: string): EstadoRut {
   const limpio = limpiarRut(texto);
-  if (!/^\d{7,8}[\dK]$/.test(limpio)) return false;
+  if (limpio === "") return "vacio";
+  if (!/^\d{7,8}[\dK]$/.test(limpio)) return "formato";
   const cuerpo = limpio.slice(0, -1);
   const dv = limpio.slice(-1);
-  return calcularDv(cuerpo) === dv;
+  return calcularDv(cuerpo) === dv ? "valido" : "verificador";
+}
+
+// Un RUT es válido si tiene 7 u 8 dígitos más el verificador, y este coincide
+export function validarRut(texto: string): boolean {
+  return evaluarRut(texto) === "valido";
 }
 
 // Da formato al RUT: "123456785" -> "12.345.678-5"

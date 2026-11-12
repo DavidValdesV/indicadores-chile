@@ -4,6 +4,16 @@ import type { Codigo, Resumen, Serie } from "./schema";
 
 const BASE_URL = "https://mindicador.cl/api";
 
+// La API entrega lo más nuevo primero; ordenamos de antiguo a nuevo para graficar
+function ordenarPorFecha(serie: Serie): Serie {
+  return {
+    ...serie,
+    serie: [...serie.serie].sort(
+      (a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime(),
+    ),
+  };
+}
+
 // Resumen con el valor actual de todos los indicadores
 export async function getResumen(): Promise<Resumen> {
   "use cache";
@@ -26,13 +36,17 @@ export async function getSerie(codigo: Codigo, anio: number): Promise<Serie> {
   if (!res.ok) {
     throw new Error(`mindicador.cl respondió con estado ${res.status}`);
   }
-  const serie = serieSchema.parse(await res.json());
+  return ordenarPorFecha(serieSchema.parse(await res.json()));
+}
 
-  // La API entrega lo más nuevo primero; ordenamos de antiguo a nuevo para graficar
-  return {
-    ...serie,
-    serie: [...serie.serie].sort(
-      (a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime(),
-    ),
-  };
+// Últimos datos de un indicador (la API entrega aprox. los últimos 30 días)
+export async function getUltimos(codigo: Codigo): Promise<Serie> {
+  "use cache";
+  cacheLife("hours");
+
+  const res = await fetch(`${BASE_URL}/${codigo}`);
+  if (!res.ok) {
+    throw new Error(`mindicador.cl respondió con estado ${res.status}`);
+  }
+  return ordenarPorFecha(serieSchema.parse(await res.json()));
 }

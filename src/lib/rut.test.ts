@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { calcularDv, formatearRut, limpiarRut, validarRut } from "./rut";
+import {
+  calcularDv,
+  evaluarRut,
+  formatearRut,
+  limpiarRut,
+  validarRut,
+} from "./rut";
 
 describe("limpiarRut", () => {
   it("quita puntos, guiones y espacios, y pasa la K a mayúscula", () => {
@@ -41,6 +47,15 @@ describe("validarRut", () => {
     expect(validarRut("abc")).toBe(false);
     expect(validarRut("1-9")).toBe(false);
     expect(validarRut("123456789012")).toBe(false);
+  });
+});
+
+describe("evaluarRut", () => {
+  it("distingue cada estado", () => {
+    expect(evaluarRut("")).toBe("vacio");
+    expect(evaluarRut("12.34")).toBe("formato");
+    expect(evaluarRut("12.345.678-9")).toBe("verificador");
+    expect(evaluarRut("12.345.678-5")).toBe("valido");
   });
 });
 
